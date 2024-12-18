@@ -1,0 +1,22 @@
+{
+  "name": "llm-chatbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@langchain/core": "^0.3.24",
+    "@langchain/google-genai": "^0.1.5",
+    "dotenv": "^16.4.7",
+    "langchain": "^0.3.7",
+    "openai": "^4.76.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
