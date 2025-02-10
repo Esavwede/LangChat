@@ -3,6 +3,7 @@ const { config } = require('dotenv')
 config() 
 const { ChatGoogleGenerativeAI } = require("@langchain/google-genai")
 const { HumanMessage, SystemMessage, AIMessage } = require("@langchain/core/messages")
+const { PromptTemplate } = require("@langchain/core/prompts")
 
 
 const llm = new ChatGoogleGenerativeAI({
@@ -18,16 +19,25 @@ const llm = new ChatGoogleGenerativeAI({
   {
     try 
     {
+ 
+        const humanMessageTemplate = new PromptTemplate(
+          {
+            template: "Give me a list of all the states in {country}.",
+            inputVariables: ["country"]
+          }
+        )
+
+
+        const systemMessage = new SystemMessage({ content: "Your Role: You are an AI system that returns a list of all the states in a country"})
+        const humanMessage = new HumanMessage({ content: await humanMessageTemplate.format({ "country":"Nigeria" })}) 
 
         const s_message = new SystemMessage({ content:"You are an AI that suggest three names for a users pet."})
         const h_message = new HumanMessage({ content:` I just bought a dog. Please help me give it a name` })
         const ai_message = new AIMessage({ content:"1. lema 2. barkbie 3. runsalot"})
 
-        const s_message_1 = new SystemMessage({ content:"You are an AI that gives of list of ten names for any specified animal"})
         const h_message_1 = new HumanMessage({ content:` I just bought a dog. Please help me give it a name` })
         const ai_message_1 = new AIMessage({ content:"1. melz 2. lobie 3. ronda"})
 
-        const s_message_2 = new SystemMessage({ content:"You are an AI that gives of list of ten names for any specified animal"})
         const h_message_2 = new HumanMessage({ content:` I just bought a tortoise. Please help me give it a name` })
         const ai_message_2 = new AIMessage({ content:"1. akorama 2. balsy 3. mesh "})
 
@@ -35,17 +45,11 @@ const llm = new ChatGoogleGenerativeAI({
 
 
         const aiMsg = await llm.invoke([
-                s_message,
-                h_message,
-                ai_message,
-                h_message_1,
-                ai_message_1,
-                h_message_2,
-                ai_message_2,
-                h_message_3
+              systemMessage, 
+              humanMessage 
           ]);
           
-          console.dir( aiMsg ) 
+          console.log( aiMsg.content ) 
     }
     catch(e)
     {
